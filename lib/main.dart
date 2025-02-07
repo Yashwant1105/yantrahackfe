@@ -24,9 +24,10 @@
 //     );
 //   }
 // }
+import 'package:amateurs/screens/user_login.dart';
 import 'package:flutter/material.dart';
-import "package:amateurs/screens/user_signup.dart";
+import 'package:amateurs/screens/user_signup.dart';
 
 void main() {
-  runApp(const UserSignUp());
+  runApp(const UserLogin());
 }

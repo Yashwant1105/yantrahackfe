@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/gestures.dart';
 
-class UserSignUp extends StatelessWidget {
-  const UserSignUp({super.key});
+class UserLogin extends StatelessWidget {
+  const UserLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,19 +12,19 @@ class UserSignUp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
-      home: const SignUpPage(),
+      home: const LoginScreen(),
     );
   }
 }
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
 
   @override
@@ -31,24 +32,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 242, 254, 244),
-        elevation: 0,
-        leading: IconButton(
-          icon: ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
-              colors: [Color(0xFF70AC4B), Color(0xF72E8231)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ).createShader(bounds),
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 40,
-            ),
-          ),
-          onPressed: () {
-            Navigator.pop(context); // Navigates back to the previous screen
-          },
-        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -80,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'User\nSign Up.',
+                  'User\nLogin.',
                   style: GoogleFonts.inter(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -91,11 +74,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Text(
-                  'A confirmation email will be sent to your inbox after you sign up, Make sure to confirm it to login.',
+                  'Welcome back! Please enter your credentials to login.',
                   textAlign: TextAlign.left,
                   style: GoogleFonts.firaCode(
                     color: const Color.fromARGB(153, 37, 35, 35),
@@ -105,8 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 30),
                 TextField(
                   cursorColor: Colors.black,
-                  style: const TextStyle(
-                      color: Colors.black), // Sets the text color to black
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Email',
                     labelStyle: const TextStyle(
@@ -133,12 +113,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                     filled: true,
                     fillColor: const Color(0xFFE8FFDB),
-                    focusColor: Colors.black,
-                    hoverColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
@@ -162,6 +140,57 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            colors: [Color(0xFF70AC4B), Color(0xF72E8231)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ).createShader(bounds);
+                        },
+                        child: Text(
+                          "\t"
+                          "Sign Up",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 100,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Switch to ",
+                            style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Factory User",
+                            style: GoogleFonts.inter(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            recognizer: TapGestureRecognizer()..onTap = () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 200),
                 SizedBox(
                   width: double.infinity,
@@ -174,13 +203,27 @@ class _SignUpPageState extends State<SignUpPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
-                      'Sign Up',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize
+                          .min, // Ensures the button adjusts to the content size
+                      children: [
+                        Text(
+                          'Login',
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                            width:
+                                190), // Adds some spacing between text and icon
+                        const Icon(
+                          Icons.arrow_forward_sharp,
+                          size: 30, // Adds a right arrow icon
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
                   ),
                 ),
