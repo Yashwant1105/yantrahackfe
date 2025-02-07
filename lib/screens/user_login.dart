@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: GoogleFonts.firaCode(
                     color: const Color.fromARGB(153, 37, 35, 35),
                     fontSize: 12,
-                  ),
+                  ), 
                 ),
                 const SizedBox(height: 30),
                 TextField(
