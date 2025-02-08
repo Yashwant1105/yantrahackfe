@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:amateurs/project/routes/app_route_constants.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserSignUp extends StatelessWidget {
   const UserSignUp({super.key});
@@ -26,7 +28,25 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final supabase = Supabase.instance.client;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
+
+  Future<void> registerUser() async {
+    try {
+      final authResponse = await supabase.auth.signUp(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Registered successfully! Check your email.'),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 30),
                 TextField(
+                  controller: emailController,
                   cursorColor: Colors.black,
                   style: const TextStyle(
                       color: Colors.black), // Sets the text color to black
@@ -131,6 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: passwordController,
                   obscureText: _isObscure,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
@@ -170,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: registerUser,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF70AC4B),
                       shape: RoundedRectangleBorder(

@@ -13,13 +13,15 @@ import 'app_route_constants.dart';
 
 class MyAppRouter {
   static GoRouter returnRouter(bool isAuth) {
-    GoRouter router = GoRouter(
+    return GoRouter(
       routes: [
         GoRoute(
           name: MyAppRouteConstants.UserLoginRouteName,
           path: '/',
           pageBuilder: (context, state) {
-            return MaterialPage(child: UserLogin());
+            return MaterialPage(
+                child: UserLogin(
+                    initialRoute: MyAppRouteConstants.UserLoginRouteName));
           },
         ),
         GoRoute(
@@ -33,65 +35,59 @@ class MyAppRouter {
           name: MyAppRouteConstants.FactorySignupRouteName,
           path: '/factorysignup',
           pageBuilder: (context, state) {
-            return MaterialPage(
-                child: FactorySignup()); //change to FactorySignUp
+            return MaterialPage(child: FactorySignup());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.CameraScanRouteName,
           path: '/camera',
           pageBuilder: (context, state) {
-            return MaterialPage(child: CameraScreen()); //change to CameraScan
+            return MaterialPage(child: CameraScreen());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.FactoryLoginRouteName,
           path: '/factorylogin',
           pageBuilder: (context, state) {
-            return MaterialPage(child: FactoryLogin()); //change to FactoryLogin
+            return MaterialPage(child: FactoryLogin());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.MyContributionsRouteName,
           path: '/mycontributions',
           pageBuilder: (context, state) {
-            return MaterialPage(
-                child: ContributionsScreen()); //change to MyContributions
+            return MaterialPage(child: ContributionsScreen());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.RecycleScreenRouteName,
           path: '/recycle',
           pageBuilder: (context, state) {
-            return MaterialPage(
-                child: RecycleScreen()); //change to RecycleScreen
+            return MaterialPage(child: RecycleScreen());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.UserMainRouteName,
           path: '/usermain',
           pageBuilder: (context, state) {
-            return MaterialPage(child: UserMain()); //change to UserMain
+            return MaterialPage(child: UserMain());
           },
         ),
         GoRoute(
           name: MyAppRouteConstants.FactoryMainRouteName,
           path: '/factorymain',
           pageBuilder: (context, state) {
-            return MaterialPage(child: FactoryMain()); //change to FactoryMain
+            return MaterialPage(child: FactoryMain());
           },
         )
       ],
-      // redirect: (context, state) {
-      //   if (!isAuth &&
-      //       state.location
-      //           .startsWith('/${MyAppRouteConstants.profileRouteName}')) {
-      //     return context.namedLocation(MyAppRouteConstants.contactUsRouteName);
-      //   } else {
-      //     return null;
-      //   }
-      // },
+      redirect: (context, state) {
+        final location = state.uri.toString();
+        if (!isAuth && location != '/') {
+          return '/';
+        }
+        return null;
+      },
     );
-    return router;
   }
 }

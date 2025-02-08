@@ -1,6 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url:
+        'https://bimsypyeakxzgigkvcid.supabase.co', // Replace with your Supabase URL
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbXN5cHllYWt4emdpZ2t2Y2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4NjE5MDMsImV4cCI6MjA1NDQzNzkwM30.hp_I8mRSDSgf4ZfRfNz0TEqJTJQq-jlXnUv_L7Gtglg', // Replace with your Supabase anonymous key
+  );
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Authentication',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: AuthScreen(),
+    );
+  }
+}
+
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -41,7 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
       // Schedule logout after 1 minute
       Future.delayed(Duration(minutes: 1), () async {
-        await supabase.auth.signOut(); // Logs out user
+        await supabase.auth.signOut();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Session expired! Please log in again.'),
         ));

@@ -1,30 +1,31 @@
-import 'package:amateurs/project/routes/app_route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:amateurs/project/routes/app_route_constants.dart';
 import 'package:amateurs/screens/user_main.dart';
 
-// class UserLogin extends StatelessWidget {
-//   const UserLogin({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData.dark().copyWith(
-//         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-//       ),
-//       home: const LoginScreen(),
-//     );
-//   }
-// }
 class UserLogin extends StatelessWidget {
-  const UserLogin({super.key});
+  final String initialRoute;
+
+  const UserLogin({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
-    return const LoginScreen();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      initialRoute: initialRoute,
+      routes: {
+        MyAppRouteConstants.UserLoginRouteName: (context) =>
+            const LoginScreen(),
+        MyAppRouteConstants.UserMainRouteName: (context) => const UserMain(),
+      },
+    );
   }
 }
 
@@ -36,7 +37,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final supabase = Supabase.instance.client;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
+
+  Future<void> loginUser() async {
+    try {
+      final authResponse = await supabase.auth.signInWithPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      final accessToken = authResponse.session?.accessToken;
+
+      if (accessToken != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', accessToken); // Save session
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Login successful!'),
+      ));
+
+      context.goNamed(MyAppRouteConstants.UserMainRouteName);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 30),
                 TextField(
+                  controller: emailController,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
@@ -119,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: passwordController,
                   obscureText: _isObscure,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.black),
@@ -210,10 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      print("Navigating to UserMain...");
-                      context.goNamed(MyAppRouteConstants.UserMainRouteName);
-                    },
+                    onPressed: loginUser,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF70AC4B),
                       shape: RoundedRectangleBorder(

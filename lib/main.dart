@@ -1,49 +1,32 @@
-// import 'package:flutter/material.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'package:amateurs/screens/authentication_screen.dart';
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await Supabase.initialize(
-//     url: "https://bimsypyeakxzgigkvcid.supabase.co",
-//     anonKey:
-//         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbXN5cHllYWt4emdpZ2t2Y2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4NjE5MDMsImV4cCI6MjA1NDQzNzkwM30.hp_I8mRSDSgf4ZfRfNz0TEqJTJQq-jlXnUv_L7Gtglg",
-//   );
-
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Auth UI',
-//       home: AuthScreen(),
-//     );
-//   }
-// }
-import 'package:amateurs/project/routes/app_route_config.dart';
-import 'package:amateurs/screens/user_login.dart';
 import 'package:flutter/material.dart';
-import 'package:amateurs/screens/user_signup.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:amateurs/project/routes/app_route_config.dart';
+import "package:go_router/go_router.dart";
 
-// void main() {
-//   runApp(const UserLogin());
-// }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://bimsypyeakxzgigkvcid.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbXN5cHllYWt4emdpZ2t2Y2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4NjE5MDMsImV4cCI6MjA1NDQzNzkwM30.hp_I8mRSDSgf4ZfRfNz0TEqJTJQq-jlXnUv_L7Gtglg',
+  );
 
-void main() {
-  runApp(const MyApp());
+  final prefs = await SharedPreferences.getInstance();
+  final accessToken = prefs.getString('accessToken');
+
+  final router = MyAppRouter.returnRouter(accessToken != null);
+
+  runApp(MyApp(router: router));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRouter router;
+
+  const MyApp({super.key, required this.router});
 
   @override
   Widget build(BuildContext context) {
-    final router = MyAppRouter.returnRouter(false);
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.routeInformationParser,
