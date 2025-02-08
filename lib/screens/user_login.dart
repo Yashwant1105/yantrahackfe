@@ -1,19 +1,30 @@
+import 'package:amateurs/project/routes/app_route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
+import 'package:go_router/go_router.dart';
+import 'package:amateurs/screens/user_main.dart';
 
+// class UserLogin extends StatelessWidget {
+//   const UserLogin({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData.dark().copyWith(
+//         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
+//       ),
+//       home: const LoginScreen(),
+//     );
+//   }
+// }
 class UserLogin extends StatelessWidget {
   const UserLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-      ),
-      home: const LoginScreen(),
-    );
+    return const LoginScreen();
   }
 }
 
@@ -81,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: GoogleFonts.firaCode(
                     color: const Color.fromARGB(153, 37, 35, 35),
                     fontSize: 12,
-                  ), 
+                  ),
                 ),
                 const SizedBox(height: 30),
                 TextField(
@@ -146,7 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context
+                            .pushNamed(MyAppRouteConstants.UserSignupRouteName);
+                      },
                       child: ShaderMask(
                         shaderCallback: (Rect bounds) {
                           return LinearGradient(
@@ -196,7 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print("Navigating to UserMain...");
+                      context.goNamed(MyAppRouteConstants.UserMainRouteName);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF70AC4B),
                       shape: RoundedRectangleBorder(

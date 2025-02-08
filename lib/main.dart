@@ -24,10 +24,31 @@
 //     );
 //   }
 // }
+import 'package:amateurs/project/routes/app_route_config.dart';
 import 'package:amateurs/screens/user_login.dart';
 import 'package:flutter/material.dart';
 import 'package:amateurs/screens/user_signup.dart';
 
+// void main() {
+//   runApp(const UserLogin());
+// }
+
 void main() {
-  runApp(const UserLogin());
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final router = MyAppRouter.returnRouter(false);
+
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+    );
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:amateurs/project/routes/app_route_constants.dart';
+import 'package:go_router/go_router.dart';
 
 class UserSignUp extends StatelessWidget {
   const UserSignUp({super.key});
@@ -46,7 +48,8 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           onPressed: () {
-            Navigator.pop(context); // Navigates back to the previous screen
+            context.pushNamed(MyAppRouteConstants
+                .UserLoginRouteName); // Navigates back to the previous screen
           },
         ),
         actions: [
